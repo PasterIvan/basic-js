@@ -1,5 +1,3 @@
-const { NotImplementedError } = require('../extensions/index.js');
-
 /**
  * Create a repeating string based on the given parameters
  *
@@ -16,15 +14,33 @@ const { NotImplementedError } = require('../extensions/index.js');
  *
  */
 function repeater(str, options) {
-  const res = []
-  let addition = options.addition
-  for (let i = 0; i < options.repeatTimes; i++) {
-    const subArr = []
-    for (let a = 0; a < options.additionRepeatTimes; a++) {
-      subArr[a] = addition.addition ? repeater(str, addition.addition) : addition
+  const res = ['']
+  if (options.repeatTimes) {
+    for (let i = 0; i < options.repeatTimes; i++) {
+      const subArr = []
+      if (options.additionRepeatTimes){
+        for (let a = 0; a < options.additionRepeatTimes; a++) {
+          if (options.addition !== undefined)
+          subArr[a] = `${options.addition}`
+        }
+      } else {
+        if (options.addition !== undefined)
+          subArr[0] = `${options.addition}`
+      }
+      res[i] = '' + str + subArr.join(options.additionSeparator ? options.additionSeparator : '|')
     }
-    res[i] = '' + str + subArr.join(options.additionSeparator ? options.additionSeparator : '|')
+  } else {
+    const subArr = []
+    if (options.additionRepeatTimes){
+      for (let a = 0; a < options.additionRepeatTimes; a++) {
+        subArr[a] = `${options.addition}`
+      }
+    } else {
+      subArr[0] = `${options.addition}`
+    }
+    res[0] = '' + str + subArr.join(options.additionSeparator ? options.additionSeparator : '|')
   }
+
  return res.join(options.separator ? options.separator : '+')
 }
 
