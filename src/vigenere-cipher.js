@@ -34,13 +34,17 @@ class VigenereCipheringMachine {
     let obj = {}
     let messUp = message.toUpperCase()
     let keyUp = key.toUpperCase()
+
     for (let a = 0; a < alf.length; a++) {
       obj[alf[a]] = a
     }
+
     let res = ''
+    let count = 0
     for (let i = 0; i < messUp.length; i += 1) {
       if (!alf.includes(obj[messUp[i]]) && obj[messUp[i]]!==undefined) {
-        res += alf[((obj[messUp[i]] + obj[keyUp[(i % keyUp.length)]]) % alf.length)]
+        res += alf[((obj[messUp[i]] + obj[keyUp[(count % keyUp.length)]]) % alf.length)]
+        count += 1
       } else {
         res += messUp[i]
       }
@@ -56,27 +60,25 @@ class VigenereCipheringMachine {
     let obj = {}
     let messUp = encryptedMessage.toUpperCase()
     let keyUp = key.toUpperCase()
-    let count = 0
 
     for (let a = 0; a < alf.length; a++) {
       obj[alf[a]] = a
     }
     let res = ''
+    let count = 0
     for (let i = 0; i < messUp.length; i++) {
       if (!alf.includes(obj[messUp[i]]) && obj[messUp[i]]!==undefined) {
-        res += alf[(obj[messUp[i]] - obj[keyUp[i % keyUp.length]] + alf.length) % alf.length]
-
+        res += alf[(obj[messUp[i]] - obj[keyUp[count % keyUp.length]] + alf.length) % alf.length]
+        count += 1
       } else {
         res += messUp[i]
-
       }
     }
-
     return this.type ? res : res.split('').reverse().join('');
   }
 }
 const res = new VigenereCipheringMachine()
-res.encrypt('attack at dawn!', 'alphonse')
+res.decrypt('UWJJW XAGWLNFM VNNNDXHVWWL :)', 'js')
 
 module.exports = {
   VigenereCipheringMachine
